@@ -1,0 +1,88 @@
+---
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+vm_build_package_state: "latest"
+## APT Cache Options
+cache_timeout: 600
+
+# Instance name
+vm_build_name: "test"
+# Number of CPU's
+vm_build_cpu: 2
+# Memory allocation in mega bytes
+vm_build_memory: 2048
+# Disk size in giga bytes
+vm_build_disk: 20G
+
+# VM image (Image is expected to be raw image)
+vm_build_image: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
+vm_build_image_sha256: sha256:84339b18993f7ea4e79067e05bc2066c8c9ae69c1a6ad6fc953a0ea016860a81
+
+# Base directory for disks, images, scripts, isos
+vm_build_base_dir: /openstack/qemu
+# VM images
+vm_build_image_dir: /openstack/qemu/image
+# VM disk image dit
+vm_build_disk_dir: /openstack/qemu/disk
+# VM scripts dir
+vm_build_script_dir: /openstack/qemu/script
+
+# VM specific settings 
+vm_build_virtualization: "qemu"
+vm_build_os_family: "Debian"
+vm_build_uuid: "ffab2cd3-b9a6-fafb-6887-d058688aa57f"
+vm_build_fqdn: "test.example.com"
+vm_build_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDDvavjyPB+HLO7Ed5ZQT0ALx3aZU7BkII3a6BWeBP0Y40n8+P3kiaaOolPCjA4xPh0iqFyLGtTB9NFuj2NKaoEqE6be/8BHmPX00bYx+7iaJWVCPJuMH0lnBjRQYLCUC6MbrgEdNaI+KH7FDCEn9xDlJLHMrhriKVky8WOI7HVimlTuSKnwntvvAO9sd9V7sE0QGWA1sIJ1+w/sIK6YjRfE5KdyjYN0l8XaBSvhg0rn4TvxrwuM0iNB7xNw1yMKiHRcygMXHJFTPevO0ftSYHd/9biqzr4njWuFaGxsSXDO528lXzaXHJFzLrjqDlaRsmExK58j1EOFg/383bh0Rv root@qemu"
+vm_build_availability_zone: ""
+vm_build_network_info: True
+vm_build_config_dir: "/openstack/qemu/iso/config"
+vm_build_iso_dir: "/openstack/qemu/iso"
+
+# Path to ssh public key file
+#vm_build_ssh_public_key_path: 
+#vm_build_config_user_data_path:
+
+# Metadata
+vm_build_meta: {}
+
+# Automatically assigned with uuid
+#vm_build_instance_dir:
+# Delete the instace dir folder after creation
+vm_build_config_dir_delete: True
+
+# Populate the /etc/resolv.conf
+#vm_build_resolv:
+#    domain: "example.com"
+#    search: "hola.example.com"
+#    dns: ['8.8.8.8']
+
+# Populate the /etc/hosts
+#vm_build_hosts:
+#  - ['127.0.1.1', 'host1.domain.com']
+#  - ['127.0.1.2', 'host3.domain.com']
+
+# Definition list of devices
+#vm_build_network_device_list:
+#  - device: "eth0"
+#    bridgename: "virbr0"
+#    bootproto: "dhcp"
+#  - device: "eth1"
+#    bridgename: "br-mgmt"
+#    bootproto: "static"
+#    address: "10.1.1.10"
+#    netmask: "255.255.255.0"
+#    type: "phy"
+#  - device: "eth2"
+#    type: ""
+#    address: "10.1.1.10"
+#    netmask: "255.255.255.0"
+#    gateway: "10.1.1.1"
+#    nameservers: 
+#      - 8.8.8.8
+#      - 9.9.9.9
+#    domain: "hola.com"
+
+
+# User/group for created files
+#vm_build_user:
+#vm_build_group:

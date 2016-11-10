@@ -1,0 +1,4 @@
+---
+vm_build_content_tmproot_dir: "_"
+vm_build_volume_name: "config-2"
+vm_build_availability_zone: ""

@@ -1,0 +1,17 @@
+#jinja2: trim_blocks:False
+{%- set device_list=vm_build_network_device_list | map(attribute='device') | list %}
+virt-install --name="{{ vm_build_name }}" \
+             --uuid="{{ vm_build_uuid }}" \
+             --vcpus="{{ vm_build_cpu }}" \
+             --ram="{{ vm_build_memory }}" \
+             --description="KVM VM" \
+             --boot=hd \
+             --noautoconsole \
+             --graphics vnc,password=test123,port=5910 \
+             --virt-type={{ vm_build_virtualization }}\
+             --os-type=linux \
+             --disk path="{{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2,format=qcow2" \
+             --disk path="{{ vm_build_iso_dir }}/{{ vm_build_name }}.iso,device=cdrom" \
+{%- for dev in vm_build_network_device_list %}
+             --network bridge={{ dev.bridgename }} {% if not loop.last %}\{% endif %}
+{%- endfor %}

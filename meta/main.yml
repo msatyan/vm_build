@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: rcbops
+  description: Install libvirt and run a virtual machine
+  company: Rackspace
+  license: Apache2
+  min_ansible_version: 1.6.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+  categories:
+    - cloud
+    - python
+    - development
+    - openstack
+dependencies:
+  - role: apt_package_pinning
+    when:
+      - ansible_pkg_mgr == 'apt'

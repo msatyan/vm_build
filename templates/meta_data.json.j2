@@ -1,0 +1,29 @@
+#jinja2: trim_blocks: False
+{
+    "availability_zone": "{{ vm_build_availability_zone | default('') }}",
+{%- if _vm_build_content_files is defined and _vm_build_content_files %}
+    "files": [
+{%- for file in _vm_build_content_files.split('\n') %}
+        {
+            "content_path": "/content/{{ '%04d' % loop.index0 }}",
+            "path": "{{ file }}"
+        }{% if not loop.last %},{% endif %}
+{%- endfor %}
+    ],
+{%- endif %}
+    "hostname": "{{ vm_build_fqdn }}",
+    "name": "{{ vm_build_name }}",
+    "meta": {
+{%- for (key, value) in vm_build_meta.iteritems() %}
+        "{{ key }}": "{{ value }}"{% if not loop.last %},{% endif %}
+{%- endfor %} 
+    },
+{%- if vm_build_ssh_public_key is defined and vm_build_ssh_public_key %}
+    "public_keys": {
+{%- for key in vm_build_ssh_public_key.split('\n') %}
+        "key{{ '%02d' % loop.index }}": "{{ key }}"{% if not loop.last %},{% endif %}
+{%- endfor %}
+    },
+{%- endif %}
+    "uuid": "{{ vm_build_uuid }}"
+}

@@ -1,0 +1,42 @@
+---
+- name: Create disk directory
+  file:
+    path: "{{ vm_build_disk_dir }}"
+    recurse: yes
+    state: directory
+
+- name: Check for existing virtual machines
+  shell: >
+     virsh list --all --name | egrep ^{{ vm_build_name }}$ | wc -l
+  register: build_vm_existing
+
+- name: Create virtual machine disk
+  shell: >
+     qemu-img convert -O qcow2 {{ vm_build_image_dir }}/{{vm_build_image | basename }} 
+     {{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2
+  when: build_vm_existing.stdout|int == 0
+
+- name: Resize virtual machine disk
+  shell: >
+     qemu-img resize {{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2 {{ vm_build_disk }}
+  when: build_vm_existing.stdout|int == 0
+
+- name: Start Virtual machine
+  command: >
+    virt-install --name="{{ vm_build_name }}"
+                 --uuid="{{ vm_build_uuid }}"
+                 --vcpus="{{ vm_build_cpu }}"
+                 --ram="{{ vm_build_memory }}"
+                 --description="KVM VM"
+                 --boot=hd
+                 --noautoconsole
+                 --graphics vnc,password=test123,port=5910
+                 --virt-type={{ vm_build_virtualization }}
+                 --os-type=linux
+                 --disk path="{{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2,format=qcow2"
+                 --disk path="{{ vm_build_iso_dir }}/{{ vm_build_name }}.iso,device=cdrom"
+    {% for dev in vm_build_network_device_list %}
+                 --network bridge={{ dev.bridgename }}
+    {% endfor %}
+  when: build_vm_existing.stdout|int == 0
+  

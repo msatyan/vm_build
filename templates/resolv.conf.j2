@@ -1,0 +1,12 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+
+{% if vm_build_resolv['domain'] is defined -%}
+domain {{ vm_build_resolv['domain'] }}
+{% endif -%}
+{% if vm_build_resolv['search'] is defined -%}
+search {{ vm_build_resolv['search'] }}
+{% endif -%}
+{% for ns in vm_build_resolv['dns'] -%}
+nameserver {{ ns }}
+{% endfor %}
+

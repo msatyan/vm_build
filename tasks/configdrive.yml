@@ -1,0 +1,70 @@
+---
+- name: Create configdrive temporary metadata folder
+  file:
+    path: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}"
+    owner: "{{ vm_build_user | default(omit) }}"
+    group: "{{ vm_build_group  | default(omit) }}"
+    mode: 0755
+    recurse: yes
+    state: directory
+  with_items:
+    - "openstack/{{ vm_build_content_tmproot_dir }}"
+
+- name: Setup temporary folder for include files
+  set_fact: _vm_build_content_path="{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/openstack/{{ vm_build_content_tmproot_dir }}"
+
+- include: configdrive_ssh_public_key.yml
+  when: not vm_build_ssh_public_key is defined or vm_build_ssh_public_key is none
+  tags: ["vm_build", "ssh"]
+
+- include: configdrive_network.yml
+  tags: ["vm_build", "network"]
+
+- name: List the include files on temporary folder
+  shell: find "{{ _vm_build_content_path }}" -type f | sed "s|{{ _vm_build_content_path }}||"
+  register: __vm_build_content_files
+
+- name: Get the list of include files on temporary folder
+  set_fact: _vm_build_content_files="{{ __vm_build_content_files.stdout }}"
+
+- name: Move files to destination from temporary folder
+  command: mv -v "{{ _vm_build_content_path }}/{{ item.1 }}" "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/openstack/content/{{ '%04d' % item.0|int }}"
+  with_indexed_items: "{{ __vm_build_content_files.stdout_lines }}"
+
+- name: Delete temporary folder
+  file:
+    state: absent
+    force: yes
+    name: "{{ _vm_build_content_path }}"
+
+- name: Create meta_data.json
+  template:
+    src: meta_data.json.j2
+    dest: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}/meta_data.json"
+    owner: "{{ vm_build_user | default(omit) }}"
+    group: "{{ vm_build_group | default(omit) }}"
+    mode: 0644
+  with_items:
+    - "openstack/2012-08-10"
+    - "openstack/latest"
+
+- name: Copy metadata file user_data
+  copy:
+    src: "{{ vm_build_config_user_data_path }}"
+    dest: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}/user_data"
+    owner: "{{ vm_build_user | default(omit) }}"
+    group: "{{ vm_build_group | default(omit) }}"
+    mode: 0644
+  with_items:
+    - "openstack/2012-08-10"
+    - "openstack/latest"
+  when: vm_build_config_user_data_path is defined
+
+- name: Create configdrive iso file
+  shell: > 
+    genisoimage  -volid "{{ vm_build_volume_name }}"  -output "{{ vm_build_iso_dir }}/{{ vm_build_name }}.iso" -joliet -rock 
+    "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}" 
+  when: vm_build_iso_dir is defined and not vm_build_config_dir is none
+
+
+

@@ -1,0 +1,53 @@
+---
+- name: Gather variables for each operating system
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+    - "{{ ansible_os_family | lower }}-{{ ansible_distribution_major_version | lower }}.yml"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+  tags:
+    - always
+
+- name: Setup config drive instance folder
+  set_fact: vm_build_instance_dir="{{ vm_build_name }}"
+  when: vm_build_instance_dir is not defined or vm_build_instance_dir is none
+
+# Install required packages
+- include: install_apt.yml
+  static: no
+  when: ansible_pkg_mgr == 'apt'
+  tags:
+    - repo-apt-packages
+
+# Download Image 
+- include: download_image.yml
+
+- name: Create config drive metadata folders
+  file:
+    path: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}"
+    owner: "{{ vm_build_user | default(omit) }}"
+    group: "{{ vm_build_group  | default(omit) }}"
+    mode: 0755
+    recurse: yes
+    state: directory
+  with_items:
+    - "openstack/2012-08-10"
+    - "openstack/latest"
+    - "openstack/content"
+
+# Generate config drive
+- include: configdrive.yml
+
+- name: Cleanup instance config drive folder
+  file: 
+    state: absent
+    force: yes 
+    name: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}"
+  when: >
+    vm_build_config_dir_delete is defined 
+    and vm_build_config_dir_delete
+
+# Create virtual machine
+- include: create_virtual_machine.yml
