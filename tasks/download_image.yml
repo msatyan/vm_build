@@ -6,4 +6,4 @@
   get_url:
     url: "{{vm_build_image}}"
     dest: "{{vm_build_image_dir}}/{{vm_build_image | basename}}"
-    checksum: "{{vm_build_image_sha256}}"
+    checksum: "{{vm_build_image_sum }}"

@@ -3,9 +3,6 @@
   template:
     src: network_info.json.j2
     dest: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}/network_info.json"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   with_items:
     - "openstack/2012-08-10"
     - "openstack/latest"
@@ -14,9 +11,6 @@
 - name: Create the network configuration folders
   file:
     path: "{{ _vm_build_content_path }}{{ item }}"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0755
     state: directory
     recurse: yes
   with_items:
@@ -26,36 +20,24 @@
   template:
     src: "resolv.conf.j2"
     dest: "{{ _vm_build_content_path }}/etc/resolv.conf"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   when: vm_build_resolv is defined and vm_build_resolv
 
 - name: Setup static hosts file
   template:
     src: "hosts.j2"
     dest: "{{ _vm_build_content_path }}/etc/hosts"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   when: vm_build_hosts is defined and vm_build_hosts
 
 - name: Setup network/interfaces for Debian
   template: 
     src: "interfaces.j2"
     dest: "{{ _vm_build_content_path }}/etc/network/interfaces"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   when: vm_build_os_family == 'Debian'
 
 - name: Setup all defined devices
   template:
     src: "device_{{ vm_build_os_family }}.j2"
     dest: "{{ _vm_build_content_path }}/{{ vm_build_os_network_path }}/{{ item.device }}.cfg"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   with_items: "{{ vm_build_network_device_list }}"
 
 

@@ -27,16 +27,24 @@
                  --uuid="{{ vm_build_uuid }}"
                  --vcpus="{{ vm_build_cpu }}"
                  --ram="{{ vm_build_memory }}"
-                 --description="KVM VM"
+                 --description="libvirt VM"
                  --boot=hd
+                 --controller="type=scsi,model=virtio-scsi" 
                  --noautoconsole
-                 --graphics vnc,password=test123,port=5910
+                 {% if vm_build_vnc_enable %}
+                 --graphics vnc,password={{ vm_build_vnc_password }},port={{ vm_build_vnc_port }}
+                 {% endif %}
                  --virt-type={{ vm_build_virtualization }}
                  --os-type=linux
                  --disk path="{{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2,format=qcow2"
                  --disk path="{{ vm_build_iso_dir }}/{{ vm_build_name }}.iso,device=cdrom"
     {% for dev in vm_build_network_device_list %}
-                 --network bridge={{ dev.bridgename }}
+        {% if dev.host_net_type == "bridge" %}
+                 --network bridge={{ dev.host_net_dev }},model=virtio
+        {% endif %}
+        {% if dev.host_net_type == "macvtap" %}
+                 --network network:macvtap-net-{{ dev.host_net_dev }},model=virtio
+        {% endif %}
     {% endfor %}
   when: build_vm_existing.stdout|int == 0
   

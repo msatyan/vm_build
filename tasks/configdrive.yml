@@ -2,9 +2,6 @@
 - name: Create configdrive temporary metadata folder
   file:
     path: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group  | default(omit) }}"
-    mode: 0755
     recurse: yes
     state: directory
   with_items:
@@ -41,9 +38,6 @@
   template:
     src: meta_data.json.j2
     dest: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}/meta_data.json"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   with_items:
     - "openstack/2012-08-10"
     - "openstack/latest"
@@ -52,9 +46,6 @@
   copy:
     src: "{{ vm_build_config_user_data_path }}"
     dest: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}/user_data"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group | default(omit) }}"
-    mode: 0644
   with_items:
     - "openstack/2012-08-10"
     - "openstack/latest"

@@ -27,9 +27,6 @@
 - name: Create config drive metadata folders
   file:
     path: "{{ vm_build_config_dir }}/{{ vm_build_instance_dir }}/{{ item }}"
-    owner: "{{ vm_build_user | default(omit) }}"
-    group: "{{ vm_build_group  | default(omit) }}"
-    mode: 0755
     recurse: yes
     state: directory
   with_items:
@@ -49,5 +46,12 @@
     vm_build_config_dir_delete is defined 
     and vm_build_config_dir_delete
 
+
+# Create virtual networks
+- include: create_virtual_network.yml
+
 # Create virtual machine
 - include: create_virtual_machine.yml
+
+
+

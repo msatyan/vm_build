@@ -15,8 +15,12 @@ vm_build_memory: 2048
 vm_build_disk: 20G
 
 # VM image (Image is expected to be raw image)
-vm_build_image: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
-vm_build_image_sha256: sha256:84339b18993f7ea4e79067e05bc2066c8c9ae69c1a6ad6fc953a0ea016860a81
+vm_build_image: https://cloud-images.ubuntu.com/trusty/20161109/trusty-server-cloudimg-amd64-disk1.img
+vm_build_image_sum: md5:e7a5ba4699b1558a9021b04bd48ccbe0
+# Enable VNC console
+vm_build_vnc_enable: False
+#vm_build_vnc_password: "H4rdT0Gu355"
+#vm_build_vnc_port: 5910
 
 # Base directory for disks, images, scripts, isos
 vm_build_base_dir: /openstack/qemu
@@ -32,8 +36,7 @@ vm_build_virtualization: "qemu"
 vm_build_os_family: "Debian"
 vm_build_uuid: "ffab2cd3-b9a6-fafb-6887-d058688aa57f"
 vm_build_fqdn: "test.example.com"
-vm_build_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDDvavjyPB+HLO7Ed5ZQT0ALx3aZU7BkII3a6BWeBP0Y40n8+P3kiaaOolPCjA4xPh0iqFyLGtTB9NFuj2NKaoEqE6be/8BHmPX00bYx+7iaJWVCPJuMH0lnBjRQYLCUC6MbrgEdNaI+KH7FDCEn9xDlJLHMrhriKVky8WOI7HVimlTuSKnwntvvAO9sd9V7sE0QGWA1sIJ1+w/sIK6YjRfE5KdyjYN0l8XaBSvhg0rn4TvxrwuM0iNB7xNw1yMKiHRcygMXHJFTPevO0ftSYHd/9biqzr4njWuFaGxsSXDO528lXzaXHJFzLrjqDlaRsmExK58j1EOFg/383bh0Rv root@qemu"
-vm_build_availability_zone: ""
+#vm_build_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDDvavjyPB+HLO7Ed5ZQT0ALx3aZU7BkII3a6BWeBP0Y40n8+P3kiaaOolPCjA4xPh0iqFyLGtTB9NFuj2NKaoEqE6be/8BHmPX00bYx+7iaJWVCPJuMH0lnBjRQYLCUC6MbrgEdNaI+KH7FDCEn9xDlJLHMrhriKVky8WOI7HVimlTuSKnwntvvAO9sd9V7sE0QGWA1sIJ1+w/sIK6YjRfE5KdyjYN0l8XaBSvhg0rn4TvxrwuM0iNB7xNw1yMKiHRcygMXHJFTPevO0ftSYHd/9biqzr4njWuFaGxsSXDO528lXzaXHJFzLrjqDlaRsmExK58j1EOFg/383bh0Rv root@qemu"
 vm_build_network_info: True
 vm_build_config_dir: "/openstack/qemu/iso/config"
 vm_build_iso_dir: "/openstack/qemu/iso"
@@ -64,14 +67,17 @@ vm_build_config_dir_delete: True
 # Definition list of devices
 #vm_build_network_device_list:
 #  - device: "eth0"
-#    bridgename: "virbr0"
+#    host_net:
+#       type: "bridge"
+#       name: "virbr0"
 #    bootproto: "dhcp"
 #  - device: "eth1"
-#    bridgename: "br-mgmt"
+#    host_net:
+#       type: "macvtap" 
+#       name: "eth1"
 #    bootproto: "static"
 #    address: "10.1.1.10"
 #    netmask: "255.255.255.0"
-#    type: "phy"
 #  - device: "eth2"
 #    type: ""
 #    address: "10.1.1.10"
