@@ -1,0 +1,4 @@
+#!/bin/sh
+# example only
+echo "adding default cloud user authorized_keys to root"
+cat /home/ubuntu/.ssh/authorized_keys > /root/.ssh/authorized_keys

@@ -15,8 +15,9 @@
       vm_build_os_family: "Debian"
       vm_build_uuid: "ffab2cd3-b9a6-fafb-6887-d058688aa57f"
       vm_build_fqdn: "test.example.com"
-      #vm_build_ssh_public_key_path: "/openstack/id_rsa.pub"
-      vm_build_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDDvavjyPB+HLO7Ed5ZQT0ALx3aZU7BkII3a6BWeBP0Y40n8+P3kiaaOolPCjA4xPh0iqFyLGtTB9NFuj2NKaoEqE6be/8BHmPX00bYx+7iaJWVCPJuMH0lnBjRQYLCUC6MbrgEdNaI+KH7FDCEn9xDlJLHMrhriKVky8WOI7HVimlTuSKnwntvvAO9sd9V7sE0QGWA1sIJ1+w/sIK6YjRfE5KdyjYN0l8XaBSvhg0rn4TvxrwuM0iNB7xNw1yMKiHRcygMXHJFTPevO0ftSYHd/9biqzr4njWuFaGxsSXDO528lXzaXHJFzLrjqDlaRsmExK58j1EOFg/383bh0Rv root@qemu"
+      vm_build_ssh_public_key_path: "~/githome/ansible/vm_build/files/id_rsa.pub"
+      vm_build_config_user_data_path: "~/githome/ansible/vm_build/files/user_data"
+      #vm_build_ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDDvavjyPB+HLO7Ed5ZQT0ALx3aZU7BkII3a6BWeBP0Y40n8+P3kiaaOolPCjA4xPh0iqFyLGtTB9NFuj2NKaoEqE6be/8BHmPX00bYx+7iaJWVCPJuMH0lnBjRQYLCUC6MbrgEdNaI+KH7FDCEn9xDlJLHMrhriKVky8WOI7HVimlTuSKnwntvvAO9sd9V7sE0QGWA1sIJ1+w/sIK6YjRfE5KdyjYN0l8XaBSvhg0rn4TvxrwuM0iNB7xNw1yMKiHRcygMXHJFTPevO0ftSYHd/9biqzr4njWuFaGxsSXDO528lXzaXHJFzLrjqDlaRsmExK58j1EOFg/383bh0Rv root@qemu"
       vm_build_availability_zone: ""
       vm_build_network_info: True
       vm_build_config_dir: "/openstack/qemu/iso/config"

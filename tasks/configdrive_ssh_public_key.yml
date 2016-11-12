@@ -1,6 +1,7 @@
 ---
 - name: Check if the ssh public key is defined locally
   local_action: stat path="{{ vm_build_ssh_public_key_path }}"
+  sudo: False
   register: __vm_build_ssh_public_key_path
   when: >
     vm_build_ssh_public_key_path is defined and

@@ -12,10 +12,8 @@
 
 - include: configdrive_ssh_public_key.yml
   when: not vm_build_ssh_public_key is defined or vm_build_ssh_public_key is none
-  tags: ["vm_build", "ssh"]
 
 - include: configdrive_network.yml
-  tags: ["vm_build", "network"]
 
 - name: List the include files on temporary folder
   shell: find "{{ _vm_build_content_path }}" -type f | sed "s|{{ _vm_build_content_path }}||"
