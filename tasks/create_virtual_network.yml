@@ -1,0 +1,48 @@
+---
+  - name: Get unique network intefaces used for macvtap
+    set_fact:
+      net_intefaces: "{{ vm_build_network_device_list | selectattr('host_net_type', 'equalto','macvtap') | map(attribute='host_net_dev')|list|unique }}"
+    with_items:
+      - vm_build_network_device_list
+
+  - name: Check for existing networks
+    shell: >
+      virsh net-list --all | tail -n+3 | awk '{ print $1}' | egrep ^macvtap-net-{{ item }}$ | cut -d '-' -f3 || true
+    register: existing_networks1
+    with_items: "{{ net_intefaces }}"
+
+  - name: Convert dict to list
+    set_fact:
+      existing_networks: "{{ existing_networks1.results | map(attribute='stdout') | list }}"
+    with_items: existing_networks1
+
+  - name: Create networks XML dir
+    file:
+      path: "{{ vm_build_script_dir }}"
+      recurse: yes
+      state: directory
+
+  - name: Create networks XML 
+    template:   
+      dest: "{{ vm_build_script_dir }}/macvtap-{{ item }}.xml"
+      src: "network.j2"
+    when: item not in existing_networks
+    with_items: "{{ net_intefaces }}"
+
+  - name: Define networks 
+    shell: >
+      virsh net-define --file "{{ vm_build_script_dir }}/macvtap-{{ item }}.xml"
+    with_items: "{{ net_intefaces }}"
+    when: item not in existing_networks
+
+  - name: Auto start networks 
+    shell: >
+      virsh net-autostart macvtap-net-{{ item }}
+    with_items: "{{ net_intefaces }}"
+    when: item not in existing_networks
+
+  - name: Start networks 
+    shell: >
+      virsh net-start macvtap-net-{{ item }}
+    with_items: "{{ net_intefaces }}"
+    when: item not in existing_networks
