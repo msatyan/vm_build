@@ -14,7 +14,8 @@ the host, and other files like `/etc/hosts` or
 `/etc/resolv.conf`. Also, it is able to include user_data 
 file https://help.ubuntu.com/community/CloudInit
 
-
+Config drive code from: 
+https://github.com/jriguera/ansible-role-configdrive
 
 Configuration
 -------------
@@ -61,6 +62,7 @@ Role parameters
           host_net_dev: "eth0"
           bootproto: "dhcp"
         - device: "eth2"
+          type: "vlan"
           host_net_type: "macvtap" 
           host_net_dev: "eth1"
           bootproto: "static"
@@ -71,6 +73,7 @@ Role parameters
             - 8.8.8.8
             - 9.9.9.9
           domain: "domain.com"
+          backend: ["eth2"]
 
 #   - name: Display all variables/facts known for a host
 #     debug: var=hostvars[inventory_hostname]
