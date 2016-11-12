@@ -30,6 +30,13 @@ iface {{ item.device }} inet static
 {% if item.domain is defined %}
         dns-search {{ item.domain }}
 {% endif %}
+{% if item.type is defined -%}
+{% if item.type == 'vlan' -%}
+{% if item.backend is defined %}
+        vlan-raw-device {{ item.backend[0] }}
+{% endif %}
+{% endif %}
+{% endif %}
 {% if item.route is defined %}
 {% for i in item.route %}
         up route add -net {{ i.network }}  netmask {{ i.netmask }} gw {{ i.gateway }} dev {{ item.device }}

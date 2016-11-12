@@ -78,8 +78,8 @@ vm_build_config_dir_delete: True
 #    bootproto: "static"
 #    address: "10.1.1.10"
 #    netmask: "255.255.255.0"
-#  - device: "eth2"
-#    type: ""
+#  - device: "eth2:500"
+#    type: "vlan"
 #    address: "10.1.1.10"
 #    netmask: "255.255.255.0"
 #    gateway: "10.1.1.1"
@@ -87,6 +87,8 @@ vm_build_config_dir_delete: True
 #      - 8.8.8.8
 #      - 9.9.9.9
 #    domain: "hola.com"
+#    backend: ["eth2"]
+
 
 
 # User/group for created files
