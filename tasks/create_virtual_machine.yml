@@ -42,9 +42,5 @@
         {% if dev.host_net_type == "bridge" %}
                  --network bridge={{ dev.host_net_dev }},model=virtio
         {% endif %}
-        {% if dev.host_net_type == "macvtap" %}
-                 --network network:macvtap-net-{{ dev.host_net_dev }},model=virtio
-        {% endif %}
     {% endfor %}
   when: build_vm_existing.stdout|int == 0
-  
