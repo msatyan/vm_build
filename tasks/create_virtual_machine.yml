@@ -1,4 +1,5 @@
 ---
+
 - name: Create disk directory
   file:
     path: "{{ vm_build_disk_dir }}"
@@ -7,40 +8,38 @@
 
 - name: Check for existing virtual machines
   shell: >
-     virsh list --all --name | egrep ^{{ vm_build_name }}$ | wc -l
+     virsh list --all --name | egrep ^{{ vm.vm_build_name }}$ | wc -l
   register: build_vm_existing
 
 - name: Create virtual machine disk
   shell: >
-     qemu-img convert -O qcow2 {{ vm_build_image_dir }}/{{vm_build_image | basename }} 
-     {{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2
+     qemu-img convert -O qcow2 {{ vm_build_image_dir }}/{{ vm.vm_build_image | basename }} 
+     {{ vm_build_disk_dir }}/{{ vm.vm_build_name }}.qcow2
   when: build_vm_existing.stdout|int == 0
 
 - name: Resize virtual machine disk
   shell: >
-     qemu-img resize {{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2 {{ vm_build_disk }}
+     qemu-img resize {{ vm_build_disk_dir }}/{{ vm.vm_build_name }}.qcow2 {{ vm.vm_build_disk }}
   when: build_vm_existing.stdout|int == 0
 
 - name: Start Virtual machine
   command: >
-    virt-install --name="{{ vm_build_name }}"
-                 --uuid="{{ vm_build_uuid }}"
-                 --vcpus="{{ vm_build_cpu }}"
-                 --ram="{{ vm_build_memory }}"
+    virt-install --name="{{ vm.vm_build_name }}"
+                 --uuid="{{ vm.vm_build_uuid }}"
+                 --vcpus="{{ vm.vm_build_cpu }}"
+                 --ram="{{ vm.vm_build_memory }}"
                  --description="libvirt VM"
                  --boot=hd
                  --controller="type=scsi,model=virtio-scsi" 
                  --noautoconsole
-                 {% if vm_build_vnc_enable %}
-                 --graphics vnc,password={{ vm_build_vnc_password }},port={{ vm_build_vnc_port }}
+                 {% if vm.vm_build_vnc_enable %}
+                 --graphics vnc,password={{ vm.vm_build_vnc_password }},port={{ vm.vm_build_vnc_port }}
                  {% endif %}
-                 --virt-type={{ vm_build_virtualization }}
+                 --virt-type={{ vm.vm_build_virtualization }}
                  --os-type=linux
-                 --disk path="{{ vm_build_disk_dir }}/{{ vm_build_name }}.qcow2,format=qcow2"
-                 --disk path="{{ vm_build_iso_dir }}/{{ vm_build_name }}.iso,device=cdrom"
-    {% for dev in vm_build_network_device_list %}
-        {% if dev.host_net_type == "bridge" %}
+                 --disk path="{{ vm_build_disk_dir }}/{{ vm.vm_build_name }}.qcow2,format=qcow2"
+                 --disk path="{{ vm_build_iso_dir }}/{{ vm.vm_build_name }}.iso,device=cdrom"
+    {% for dev in vm.vm_build_network_device_list %}
                  --network bridge={{ dev.host_net_dev }},model=virtio
-        {% endif %}
     {% endfor %}
   when: build_vm_existing.stdout|int == 0

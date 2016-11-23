@@ -1,8 +1,8 @@
 #jinja2: trim_blocks: "true", lstrip_blocks: "true"
 127.0.0.1	localhost
-127.0.0.1   {{ vm_build_fqdn }} {{ vm_build_name }} 
+127.0.0.1   {{ vm.vm_build_fqdn }} {{ vm.vm_build_name }} 
 
-{% for host in vm_build_hosts %}
+{% for host in vm.vm_build_hosts %}
 {{ host | join(' ') }}
 {% endfor %}
 

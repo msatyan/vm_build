@@ -11,10 +11,10 @@
 {%- endfor %}
     ],
 {%- endif %}
-    "hostname": "{{ vm_build_fqdn }}",
-    "name": "{{ vm_build_name }}",
+    "hostname": "{{ vm.vm_build_fqdn }}",
+    "name": "{{ vm.vm_build_name }}",
     "meta": {
-{%- for (key, value) in vm_build_meta.iteritems() %}
+{%- for (key, value) in vm.vm_build_meta.iteritems() %}
         "{{ key }}": "{{ value }}"{% if not loop.last %},{% endif %}
 {%- endfor %} 
     },
@@ -25,5 +25,5 @@
 {%- endfor %}
     },
 {%- endif %}
-    "uuid": "{{ vm_build_uuid }}"
+    "uuid": "{{ vm.vm_build_uuid }}"
 }

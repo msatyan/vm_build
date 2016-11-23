@@ -1,8 +1,8 @@
 #jinja2: trim_blocks: False
 {
-{%- set device_list=vm_build_network_device_list | map(attribute='device') | list %}
+{%- set device_list=vm.vm_build_network_device_list | map(attribute='device') | list %}
     "links": [
-{%- for dev in vm_build_network_device_list %}
+{%- for dev in vm.vm_build_network_device_list %}
         {
             "id": "{{ dev.device }}",
             "type": "{{ dev.type | default('phy') }}",
@@ -14,7 +14,7 @@
 {%- endfor %}
     ],
     "networks": [
-{%- for dev in vm_build_network_device_list %}
+{%- for dev in vm.vm_build_network_device_list %}
     {
         "id": "{{ dev.type | default('phy') }}-{{ dev.device }}",
         "type": "ipv4",
@@ -53,8 +53,8 @@
 {%- endfor %}
     ],
     "services": [
-{%- if vm_build_resolv is defined and vm_build_resolv.dns is defined %}
-{%- for d in vm_build_resolv.dns %}
+{%- if vm.vm_build_resolv is defined and vm.vm_build_resolv.dns is defined %}
+{%- for d in vm.vm_build_resolv.dns %}
         {
             "type": "dns",
             "address": "{{ d }}"

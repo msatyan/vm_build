@@ -1,18 +1,20 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
 ---
 - name: Create image directory
   file: path={{vm_build_image_dir}} state=directory
 
 - name: Downloading image
   shell: >
-    MDSUM=$( md5sum "{{vm_build_image_dir}}/{{vm_build_image | basename}}" | awk '{print $1}');
-    if [ "$MDSUM" = "{{vm_build_image_sum}}" ];then 
-      echo "Download skipped as image already exists"
-    else 
-      echo "MDSUM:{{vm_build_image_sum}} doesn't match MDSUM: ${MDSUM} of a file"
-      wget --quiet  "{{vm_build_image}}" -O  "{{vm_build_image_dir}}/{{vm_build_image | basename}}"
+    if [ -f "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" ]; then
+      MDSUM=$( md5sum "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" | awk '{print $1}');
+      if [ "$MDSUM" = "{{vm.vm_build_image_sum}}" ];then 
+        echo "Download skipped as image already exists"
+      else
+        echo "MDSUM:{{vm.vm_build_image_sum}} doesn't match MDSUM: ${MDSUM} of a file"
+        wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
+      fi
+    else
+        wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
     fi
-  environment:
-    http_proxy: http://10.33.33.40:3128
-    https_proxy: http://10.33.33.40:3128
-    HTTP_PROXY: http://10.33.33.40:3128
-    HTTPS_PROXY: http://10.33.33.40:3128
+
+  environment: "{{ vm_build_proxy_list }}"
