@@ -81,15 +81,15 @@
               bootproto: "dhcp"
             - device: "eth2:600"
               host_net_dev: "virbr0"
-            type: vlan
-            bootproto: "static"
-            address: "10.2.1.10"
-            netmask: "255.255.255.0"
-            nameservers:
-              - 8.8.8.8
-              - 9.9.9.9
-            domain: "domain.com"
-            backend: ["eth2"]
-        vm_build_meta: {}
+              type: vlan
+              bootproto: "static"
+              address: "10.2.1.10"
+              netmask: "255.255.255.0"
+              nameservers:
+                - 8.8.8.8
+                - 9.9.9.9
+              domain: "domain.com"
+              backend: ["eth2"]
+          vm_build_meta: {}
 #   - name: Display all variables/facts known for a host
 #     debug: var=hostvars[inventory_hostname]

@@ -18,9 +18,9 @@
         "{{ key }}": "{{ value }}"{% if not loop.last %},{% endif %}
 {%- endfor %} 
     },
-{%- if vm_build_ssh_public_key is defined and vm_build_ssh_public_key %}
+{%- if vm.vm_build_ssh_public_key is defined and vm_build_ssh_public_key %}
     "public_keys": {
-{%- for key in vm_build_ssh_public_key.split('\n') %}
+{%- for key in vm.vm_build_ssh_public_key.split('\n') %}
         "key{{ '%02d' % loop.index }}": "{{ key }}"{% if not loop.last %},{% endif %}
 {%- endfor %}
     },

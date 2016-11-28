@@ -4,17 +4,22 @@
   file: path={{vm_build_image_dir}} state=directory
 
 - name: Downloading image
-  shell: >
-    if [ -f "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" ]; then
-      MDSUM=$( md5sum "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" | awk '{print $1}');
-      if [ "$MDSUM" = "{{vm.vm_build_image_sum}}" ];then 
-        echo "Download skipped as image already exists"
-      else
-        echo "MDSUM:{{vm.vm_build_image_sum}} doesn't match MDSUM: ${MDSUM} of a file"
-        wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
-      fi
-    else
-        wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
-    fi
+  get_url:
+    url: {{vm.vm_build_image}}
+    dest: {{vm_build_image_dir}}/{{vm.vm_build_image | basename}}
+    checksum: {{vm.vm_build_image_sum}}
+  
+  #shell: >
+  #  if [ -f "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" ]; then
+  #    MDSUM=$( md5sum "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" | awk '{print $1}');
+  #    if [ "$MDSUM" = "{{vm.vm_build_image_sum}}" ];then 
+  #      echo "Download skipped as image already exists"
+  #    else
+  #      echo "MDSUM:{{vm.vm_build_image_sum}} doesn't match MDSUM: ${MDSUM} of a file"
+  #      wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
+  #    fi
+  #  else
+  #      wget --quiet "{{vm.vm_build_image}}" -O "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}"
+  #  fi
 
   environment: "{{ vm_build_proxy_list }}"

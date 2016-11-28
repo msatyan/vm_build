@@ -6,16 +6,16 @@ vm_build_package_state: "latest"
 cache_timeout: 600
 
 # Base directory for disks, images, scripts, isos
-vm_build_base_dir: /openstack/qemu
+vm_build_base_dir: /openstack/libvirt
 # VM images
-vm_build_image_dir: /openstack/qemu/image
+vm_build_image_dir: /openstack/libvirt/image
 # VM disk image dit
-vm_build_disk_dir: /openstack/qemu/disk
+vm_build_disk_dir: /openstack/libvirt/disk
 # VM scripts dir
-vm_build_script_dir: /openstack/qemu/script
+vm_build_script_dir: /openstack/libvirt/script
 # Temporary directory for ISO generate
 vm_build_config_dir: "/openstack/qemu/iso/config"
-vm_build_iso_dir: "/openstack/qemu/iso"
+vm_build_iso_dir: "/openstack/libvirt/iso"
 # Delete the instace dir folder after creation
 vm_build_config_dir_delete: True
 vm_build_network_info: True
