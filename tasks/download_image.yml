@@ -1,13 +1,13 @@
 #jinja2: trim_blocks: "true", lstrip_blocks: "true"
 ---
 - name: Create image directory
-  file: path={{vm_build_image_dir}} state=directory
+  file: path={{ vm_build_image_dir }} state=directory
 
 - name: Downloading image
   get_url:
-    url: {{vm.vm_build_image}}
-    dest: {{vm_build_image_dir}}/{{vm.vm_build_image | basename}}
-    checksum: {{vm.vm_build_image_sum}}
+    url: "{{ vm.vm_build_image }}"
+    dest: "{{ vm_build_image_dir }}/{{ vm.vm_build_image | basename }}"
+    checksum: "{{ vm.vm_build_image_sum }}"
   
   #shell: >
   #  if [ -f "{{vm_build_image_dir}}/{{vm.vm_build_image | basename}}" ]; then

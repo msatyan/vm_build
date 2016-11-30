@@ -14,7 +14,7 @@ vm_build_disk_dir: /openstack/libvirt/disk
 # VM scripts dir
 vm_build_script_dir: /openstack/libvirt/script
 # Temporary directory for ISO generate
-vm_build_config_dir: "/openstack/qemu/iso/config"
+vm_build_config_dir: "/openstack/libvirt/iso/config"
 vm_build_iso_dir: "/openstack/libvirt/iso"
 # Delete the instace dir folder after creation
 vm_build_config_dir_delete: True

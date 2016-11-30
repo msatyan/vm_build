@@ -39,7 +39,7 @@
     not _vm_build_ssh_public_key is defined
     
 - name: Load file ssh public keys
-  set_fact: vm.vm_build_ssh_public_key="{{ _vm_build_ssh_public_key }}"
+  set_fact: vm_build_ssh_public_key="{{ _vm_build_ssh_public_key }}"
   when: >
     _vm_build_ssh_public_key is defined and
     not _vm_build_ssh_public_key is none

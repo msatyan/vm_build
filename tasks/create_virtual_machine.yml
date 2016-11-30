@@ -6,23 +6,23 @@
     recurse: yes
     state: directory
 
-- name: Check for existing virtual machines
+- name: Check for existing virtual machines "{{ vm.vm_build_name }}"
   shell: >
      virsh list --all --name | egrep ^{{ vm.vm_build_name }}$ | wc -l
   register: build_vm_existing
 
-- name: Create virtual machine disk
+- name: Create virtual machine disk for "{{ vm.vm_build_name }}"
   shell: >
      qemu-img convert -O qcow2 {{ vm_build_image_dir }}/{{ vm.vm_build_image | basename }} 
      {{ vm_build_disk_dir }}/{{ vm.vm_build_name }}.qcow2
   when: build_vm_existing.stdout|int == 0
 
-- name: Resize virtual machine disk
+- name: Resize virtual machine disk for "{{ vm.vm_build_name }}"
   shell: >
      qemu-img resize {{ vm_build_disk_dir }}/{{ vm.vm_build_name }}.qcow2 {{ vm.vm_build_disk }}
   when: build_vm_existing.stdout|int == 0
 
-- name: Start Virtual machine
+- name: Start Virtual machine "{{ vm.vm_build_name }}"
   command: >
     virt-install --name="{{ vm.vm_build_name }}"
                  --uuid="{{ vm.vm_build_uuid }}"

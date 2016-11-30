@@ -11,7 +11,7 @@
           vm_build_memory: 1024
           vm_build_disk: 20G
           vm_build_image: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
-          vm_build_image_sum: d41d8cd98f00b204e9800998ecf8427e
+          vm_build_image_sum: md5:089bb9b52204e45218519a1773e977d0
           vm_build_virtualization: "qemu"
           vm_build_os_family: "Debian"
           vm_build_uuid: "6ca2798d-2fd8-4c46-99be-cb2ea970c1d5"
@@ -55,7 +55,7 @@
           vm_build_memory: 1024
           vm_build_disk: 20G
           vm_build_image: https://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img
-          vm_build_image_sum: d41d8cd98f00b204e9800998ecf8427e
+          vm_build_image_sum: md5:089bb9b52204e45218519a1773e977d0
           vm_build_virtualization: "qemu"
           vm_build_os_family: "Debian"
           vm_build_uuid: "338d9752-a26a-4678-b10a-fee64bff1da6"
